@@ -80,7 +80,14 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
+    'available_locales' => [
+        'ru',
+        'kk',
+    ],
+    'default_images' => '{"mini":"no-image-mini.jpg","max":"no-image-max.jpg","path":"no-image.jpg"}',
+    'main_menu_max_items' => 4,
+    'footer_nav_links_col' => 3,
 
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +100,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -163,10 +170,12 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class,
-        //Intervention\Image\ImageServiceProvider::class,
-        //App\Providers\CustomServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+        //Lavary\Menu\ServiceProvider::class,
+        //'Lavary\Menu\ServiceProvider',
 
-        'Lavary\Menu\ServiceProvider',
+        //App\Providers\CustomServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -235,8 +244,8 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'PathWithoutLocale' => App\Helpers\Custom\PathWithoutLocale::class,
-        'Menu'       => 'Lavary\Menu\Facade',
+        //'PathWithoutLocale' => App\Helpers\Custom\PathWithoutLocale::class,
+        //'Menu'       => 'Lavary\Menu\Facade',
 
     ],
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0aeebf305259e88c2f4a8cc9c85691b",
+    "content-hash": "cd4ef4224cfce554bfd2cdef7a28018b",
     "packages": [
         {
             "name": "astrotomic/laravel-translatable",
@@ -1062,7 +1062,7 @@
         },
         {
             "name": "lavary/laravel-menu",
-            "version": "v1.7.5",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lavary/laravel-menu.git",
@@ -5235,7 +5235,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "lavary/laravel-menu": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
