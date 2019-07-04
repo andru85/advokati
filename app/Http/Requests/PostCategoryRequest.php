@@ -24,8 +24,8 @@ class PostCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'parent_id' => 'exists:categories,id',
+            //'parent_id' => 'exists:categories,id',
+            'weight' => 'numeric|min:1',
         ];
     }
 }

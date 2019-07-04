@@ -1,3 +1,4 @@
+<?php //dd($categories) ?>
 @unless ($categories->isEmpty())
     <ul class="category-tree">
         @foreach ($categories as $category)
@@ -13,9 +14,9 @@
 
                 </span>
 
-                    {{ $category->name }}
+                {{ $category->weight }}. {{ $category->name }}
 
-                @can('category-delete')
+                @can('content-delete')
                     {!! Form::open(['method' => 'DELETE', 'route' => ['categories.destroy', app()->getLocale(), 'id' => $category->id],'style'=>'display:inline']) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-danger py-0 px-2 ml-2']) !!}
                     {!! Form::close() !!}

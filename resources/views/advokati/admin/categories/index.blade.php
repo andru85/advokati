@@ -1,6 +1,5 @@
 @extends(env('THEME').'.layouts.app')
 
-
 @section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">
@@ -14,7 +13,6 @@
             </div>
         </div>
     </div>
-
 
     @if ($message = Session::get('success'))
         <div class="alert alert-success">

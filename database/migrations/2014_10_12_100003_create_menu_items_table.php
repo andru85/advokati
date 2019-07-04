@@ -45,8 +45,6 @@ class CreateMenuItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menu_items');
-
         if (Schema::hasTable('menu_item_translations')){
             Schema::drop('menu_item_translations');
         }

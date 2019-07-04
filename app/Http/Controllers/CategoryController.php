@@ -16,15 +16,29 @@ class CategoryController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:category-list');
-        $this->middleware('permission:category-create', ['only' => ['create','store']]);
-        $this->middleware('permission:category-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:category-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:content-list');
+        $this->middleware('permission:content-create', ['only' => ['create','store']]);
+        $this->middleware('permission:content-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:content-delete', ['only' => ['destroy']]);
+    }
+
+    public function order_collection_by_weight($collection){
+        foreach ($collection as $item){
+            if(count($item->children) > 0){
+                $this->order_collection_by_weight($item->children);
+            }
+        }
+        return $collection->sortBy('weight');
     }
 
     public function index(Request $request)
     {
-        $categories = Category::get()->toTree();
+        $db_categories = Category::get()->toTree();
+        $categories = $this->order_collection_by_weight($db_categories);
+
+        foreach ($categories as $category){
+            $category->children = $category->children->sortBy('weight');
+        }
         return view(env('THEME').'.admin.categories.index', compact('categories'));
     }
 
@@ -39,9 +53,21 @@ class CategoryController extends Controller
 
     public function store(PostCategoryRequest $request)
     {
-        //dd($request);
-        $category = Category::create($request->all());
+        $data = $request->except('_token','image');
+        $category = new Category();
+        $category->parent_id = $data['parent_id'];
+        $category->weight = $data['weight'];
+        $category->save();
+        $default_locale = config('app.fallback_locale');
 
+        foreach (config('app.available_locales') as $locale) {
+            if (isset($data['name-' . $locale])) {
+                $category->translateOrNew($locale)->name = $data['name-' . $locale];
+            } else {
+                $category->translateOrNew($locale)->name = $data['name-' . $default_locale];
+            }
+        }
+        $category->save();
         return redirect()
             ->route('categories.index', app()->getLocale())
             ->with('success', 'Category successfully created!');
@@ -49,7 +75,6 @@ class CategoryController extends Controller
 
     public function edit($locale, $id)
     {
-        /** @var Category $category */
         $category = Category::findOrFail($id);
 
         $categories = $this->getCategoryOptions($category);
@@ -59,11 +84,18 @@ class CategoryController extends Controller
 
     public function update(PostCategoryRequest $request, $locale, $id)
     {
-        /** @var Category $category */
         $category = Category::findOrFail($id);
-
-        $category->update($request->all());
-
+        $data = $request->except('_token','image');
+        $category->parent_id = $data['parent_id'];
+        $category->weight = $data['weight'];
+        foreach (config('app.available_locales') as $locale) {
+            if (isset($data['name-' . $locale])) {
+                $category->translateOrNew($locale)->name = $data['name-' . $locale];
+            } else {
+                $category->translateOrNew($locale)->name = $data['name-' . $default_locale];
+            }
+        }
+        $category->update();
         return redirect()->route('categories.index', [ app()->getLocale() ])->with('success', 'Category successfully updated!');
     }
 
@@ -94,7 +126,7 @@ class CategoryController extends Controller
     protected function getCategoryOptions($except = null)
     {
         /** @var \Kalnoy\Nestedset\QueryBuilder $query */
-        $query = Category::select('id', 'name')->withDepth();
+        $query = Category::select('id')->with('translations')->withDepth();
 
         if ($except)
         {

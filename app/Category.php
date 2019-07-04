@@ -10,6 +10,14 @@ class Category extends Model
     use NodeTrait;
 
     protected $fillable = [
-        'name', 'parent_id',
+        'parent_id',
     ];
+
+    use \Astrotomic\Translatable\Translatable;
+    public $translatedAttributes = ['name'];
+
+    public function Translations()
+    {
+        return $this->hasMany('App\CategoryTranslation');
+    }
 }

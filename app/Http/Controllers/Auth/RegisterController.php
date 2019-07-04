@@ -37,6 +37,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        $this->redirectTo = '/'.app()->getLocale().$this->redirectTo;
         $this->middleware('guest');
     }
 
