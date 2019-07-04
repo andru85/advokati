@@ -36,8 +36,6 @@ class PermissionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $permissions = Permission::get(); //Get all roles
-
         return view(env('THEME') . '.admin.permissions.create');
     }
 

@@ -30,6 +30,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[A-Za-z]{2}'], 'm
         Route::resource('permissions','PermissionController');
         Route::resource('users','UserController');
         Route::resource('products','ProductController');
+        Route::resource('categories', 'CategoryController');
     });
 
 });

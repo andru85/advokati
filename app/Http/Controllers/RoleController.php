@@ -54,7 +54,6 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $roles = Role::orderBy('id','ASC')->with('permissions')->paginate(20);
-        //dd($roles);
         return view(env('THEME').'.admin.roles.index', compact('roles'))
             ->with('i', ($request->input('page', 1) - 1) * 20);
     }
@@ -68,7 +67,7 @@ class RoleController extends Controller
     public function create()
     {
         $permission = Permission::get();
-        return view(env('THEME').'.admin.roles.create',compact('permission'));
+        return view(env('THEME').'.admin.roles.create', compact('permission'));
     }
 
 
